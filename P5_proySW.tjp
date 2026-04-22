@@ -70,7 +70,7 @@ resource dev3 "Peter Green" {
 }
 
 # TAREA 5
-resource dev4 "Liria Reinaldos Espés" {
+resource yo "Liria Reinaldos Espés" {
   email "898431@unizar.es"
   workinghours mon - fri 09:00 - 13:00
 }
@@ -165,7 +165,7 @@ task WMGame "Web & Mobile Game" {
     task tmGUId "Mobile GUI Design" {
       effort 12d
       actual:effort 11d
-      allocate dev3, dev4 # TAREA 5
+      allocate dev3, yo # TAREA 5
 
       # TAREA 3
       journalentry 2026-04-22 "Task succesfully completed" {
@@ -176,7 +176,7 @@ task WMGame "Web & Mobile Game" {
     }
     task tmFEc "Mobile Front End Development" {
       effort 10d
-      allocate dev2, dev4 # TAREA 5
+      allocate dev2, yo # TAREA 5
       depends WMGame.tmobF.tmGUId
     }
     task tmFEt "Mobile Front End Testing" {
