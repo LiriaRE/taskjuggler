@@ -19,7 +19,7 @@ project pSix "Web Game"  2025-12-15 +5m {
   # the project reports. If not specified, the current day will be
   # used, but this will likely be outside of the project range, so it
   # can't be seen in the reports.
-  now 2026-02-25-13:00
+  now 2026-04-22-10:00 # TAREA 3
   # The currency for all money values is the US Dollar.
   currency "EUR"
 
@@ -67,6 +67,12 @@ resource dev2 "Samantha Müller" {
 }
 resource dev3 "Peter Green" {
   email "kkk@unizar.es"
+}
+
+# TAREA 5
+resource dev4 "Liria Reinaldos Espés" {
+  email "898431@unizar.es"
+  workinghours mon - fri 09:00 - 13:00
 }
 
 # Now we specify the work packages. The whole project is described as
@@ -147,6 +153,57 @@ task WMGame "Web & Mobile Game" {
     }    
   }
 
+  # TAREA 1
+  task tmobF "Mobile Front End" {
+    purge chargeset
+    chargeset mFront
+    responsible dev1, dev3
+    depends WMGame.tback.tBEd 
+    # Para empezar el desarrollo del frontend en móvil, es necesario tener un diseño general del backend
+    # Y para tener el diseño general del backend, ya se ha tenido que desarrollar el diseño general del sistema (WMGame.tgdesign)
+
+    task tmGUId "Mobile GUI Design" {
+      effort 12d
+      actual:effort 11d
+      allocate dev3, dev4 # TAREA 5
+
+      # TAREA 3
+      journalentry 2026-04-22 "Task succesfully completed" {
+        author dev3
+        alert green
+        summary "I have finished the mobile interface design before the deadline and without errors."
+      }
+    }
+    task tmFEc "Mobile Front End Development" {
+      effort 10d
+      allocate dev2, dev4 # TAREA 5
+      depends WMGame.tmobF.tmGUId
+    }
+    task tmFEt "Mobile Front End Testing" {
+      effort 4d
+      allocate dev2
+      depends WMGame.tmobF.tmFEc
+    }    
+  }
+
+  task tcloud "Cloud deployment" {
+    purge chargeset
+    chargeset back
+    
+    task tEval "Cloud deployment Evaluation and decision" {
+      effort 4d
+      allocate boss
+      # No depende de nada porque es una evaluación teórica, se puede hacer al principio
+    }
+    
+    task tDeploy "Cloud Backend deployment" {
+      effort 4d
+      allocate dev1
+      depends WMGame.tcloud.tEval, WMGame.tback.tbackDev
+      # En este caso sí es necesario que el backend esté implementado para poder desplegarlo
+    }
+  }
+
   task ttest "Acceptance tests" {
       effort 10d
       allocate boss
@@ -154,6 +211,11 @@ task WMGame "Web & Mobile Game" {
       actual:effort 20d
       depends WMGame.twebF
       depends WMGame.tback
+      depends WMGame.tmobF
+      depends WMGame.tcloud
+
+      # TAREA 2
+      minstart 2026-05-15
       }
 
     
@@ -223,6 +285,13 @@ textreport frame "" {
     formats html
     center '<[report id="overview"]>'
   }
+
+  # TAREA 4
+  textreport inicial "InitialPlan" {
+    formats html
+    title "Planificación Inicial"
+    center '<[report id="initial_plan"]>'
+  }
   
   textreport "Status" {
     formats html
@@ -268,6 +337,17 @@ taskreport overview "" {
   hideresource @all
   balance cost rev
   caption 'All effort values are in man days.'
+}
+
+# TAREA 4
+taskreport initial_plan "" {
+  scenarios plan
+  headline "Planificación Inicial"
+  columns bsi { title 'WBS' }, name, start, end, effort
+  timeformat "%a %Y-%m-%d"
+  loadunit days
+  hideresource @all
+  caption "Todos los valores están en días"
 }
 
 
